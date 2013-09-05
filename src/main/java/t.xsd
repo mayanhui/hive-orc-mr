@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			elementFormDefault="qualified" 
+			targetNamespace="http://www.w3school.com.cn" 
+			xmlns:ns1="http://www.w3school.com.cn" >
+  <xs:element name="note">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ns1:to"/>
+        <xs:element ref="ns1:from"/>
+        <xs:element ref="ns1:heading"/>
+        <xs:element ref="ns1:body"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="to" type="xs:string"/>
+  <xs:element name="from" type="xs:string"/>
+  <xs:element name="heading" type="xs:string"/>
+  <xs:element name="body" type="xs:string"/>
+</xs:schema>

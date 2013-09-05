@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<note xmlns="http://www.w3school.com.cn">
+    <to>George</to>
+    <from>John</from>
+    <heading>Reminder</heading>
+    <body>hello,this is new xml file</body>
+</note>
