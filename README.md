@@ -25,6 +25,7 @@ Compared with RCFile format, for example, ORC file format has many advantages su
 
 
 # Create ORC Table
+<pre><code>
 CREATE EXTERNAL TABLE test.test_20130728_orc(
   stat_date string, 
   stat_hour string, 
@@ -62,4 +63,4 @@ CREATE EXTERNAL TABLE test.test_20130728_orc(
 STORED AS ORC 
 LOCATION "/data/test/20130728_orc"
 tblproperties ("orc.compress"="ZLIB");
-
+</code></pre>
