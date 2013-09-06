@@ -54,7 +54,7 @@ public class DateFormatUtil {
 	}
 
 	public static void main(String[] args) {
-		String str = "2013-01-15 17:54:29 345:asdf";
+		String str = "2013-01-15 17:54:29 345";
 		System.out.println(str);
 		System.out.println(formatStringTimeToLong(str));
 		System.out.println(Integer.parseInt("20130121")
