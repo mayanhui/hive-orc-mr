@@ -24,7 +24,7 @@ Compared with RCFile format, for example, ORC file format has many advantages su
  * metadata stored using Protocol Buffers, which allows addition and removal of fields
 
 
-# Create ORC Table
+# ORC related HQL
 <pre><code>
 CREATE EXTERNAL TABLE test.test_20130728_orc(
   stat_date string, 
@@ -65,6 +65,6 @@ LOCATION "/data/test/20130728_orc"
 tblproperties ("orc.compress"="ZLIB");
 </code></pre>
 
-<code><pre>
+<pre><code>
 INSERT OVERWRITE TABLE test.test_20130728_orc SELECT * FROM test.test_20130728;
 </code></pre>
