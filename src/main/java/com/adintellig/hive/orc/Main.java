@@ -22,17 +22,22 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		Configuration conf = new Configuration();
+		//conf
 		conf.set("mapred.job.queue.name", "ETL");
-
-		FileSystem fs = FileSystem.get(conf);
-		Path outputPath = new Path(output);
-		if (fs.exists(outputPath)) {
-			fs.delete(outputPath, true);
-		}
+		//需要拼接而成
+		conf.set("hive.orc.output.filename.prefix", "vv_20130728_06");
+		conf.set("hive.orc.input.log.type","vv");
+		
+		
+//		FileSystem fs = FileSystem.get(conf);
+//		Path outputPath = new Path(output);
+//		if (fs.exists(outputPath)) {
+//			fs.delete(outputPath, true);
+//		}
 
 		JobConf job = new JobConf(conf);
 		job.setJarByClass(Main.class);
-		job.setMapperClass(LZOORCMapper.class);
+		job.setMapperClass(ORCMapper.class);
 		job.setNumReduceTasks(0);
 		job.setOutputKeyClass(NullWritable.class);
 		job.setOutputValueClass(Writable.class);
