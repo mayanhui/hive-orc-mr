@@ -22,3 +22,44 @@ Compared with RCFile format, for example, ORC file format has many advantages su
  * ability to split files without scanning for markers
  * bound the amount of memory needed for reading or writing
  * metadata stored using Protocol Buffers, which allows addition and removal of fields
+
+
+# Create ORC Table
+CREATE EXTERNAL TABLE test.test_20130728_orc(
+  stat_date string, 
+  stat_hour string, 
+  ip string, 
+  logdate string, 
+  method string, 
+  url string, 
+  uid string, 
+  pid string, 
+  aid int, 
+  wid int, 
+  vid int, 
+  type int, 
+  stat int, 
+  mtime float, 
+  ptime float, 
+  channel string, 
+  boxver string, 
+  bftime int, 
+  country string, 
+  province string, 
+  city string, 
+  isp string, 
+  ditchid int, 
+  drm int, 
+  charge int, 
+  ad int, 
+  adclick int, 
+  groupid int, 
+  client int, 
+  usertype int, 
+  ptolemy int, 
+  fixedid string, 
+  userid string) 
+STORED AS ORC 
+LOCATION "/data/test/20130728_orc"
+tblproperties ("orc.compress"="ZLIB");
+
