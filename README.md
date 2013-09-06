@@ -64,3 +64,7 @@ STORED AS ORC
 LOCATION "/data/test/20130728_orc"
 tblproperties ("orc.compress"="ZLIB");
 </code></pre>
+
+<code><pre>
+INSERT OVERWRITE TABLE test.test_20130728_orc SELECT * FROM test.test_20130728;
+</code></pre>
