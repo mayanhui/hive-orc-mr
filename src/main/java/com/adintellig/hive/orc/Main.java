@@ -1,6 +1,5 @@
 package com.adintellig.hive.orc;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.FileUtil;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat;
-import org.apache.hadoop.io.IOUtils;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapred.JobClient;
@@ -34,6 +32,7 @@ import com.hadoop.mapred.DeprecatedLzoTextInputFormat;
 public class Main {
 
 	public static final String JOB_NAME = "Hive ORC Generation";
+	public static final String JOB_OUTPUT_TEMP_DIR_SUFFIX = "_temp";
 
 	public static void main(String[] args) throws Exception {
 		Configuration conf = new Configuration();
@@ -47,7 +46,7 @@ public class Main {
 		String kind = cmd.getOptionValue("k");
 		String queue = cmd.getOptionValue("q");
 
-		// valid
+		/* valid */
 		int dateInt = Integer.parseInt(date);
 		if (dateInt < 19700101 || dateInt > 21000101)
 			throw new Exception("date format invalid: " + date);
@@ -55,7 +54,7 @@ public class Main {
 		if (hourInt < 0 || hourInt > 24)
 			throw new Exception("hour format invalid: " + hour);
 
-		// config
+		/* config */
 		String prefix = genOutputFileNamePrefix(kind, date, hour);
 		if (null != prefix && prefix.trim().length() > 0)
 			conf.set("hive.orc.output.filename.prefix", prefix.trim());
@@ -64,6 +63,7 @@ public class Main {
 		if (null != queue && queue.trim().length() > 0)
 			conf.set("mapred.job.queue.name", queue.trim());
 
+		/* JOB */
 		JobConf job = new JobConf(conf);
 		job.setJobName(JOB_NAME);
 		job.setJarByClass(Main.class);
@@ -77,31 +77,37 @@ public class Main {
 		DeprecatedLzoTextInputFormat.addInputPath(job, new Path(input));
 
 		FileSystem fs = FileSystem.get(conf);
-		Path outputPath = new Path(output, hour);
-		if (fs.exists(outputPath))
-			fs.delete(outputPath, true);
-		OrcOutputFormat.setOutputPath(job, outputPath);
+		if (output.endsWith("/"))
+			output = output.substring(0, output.length() - 1);
+		Path tempOutputPath = new Path(output + "_" + hour
+				+ JOB_OUTPUT_TEMP_DIR_SUFFIX);
+		if (fs.exists(tempOutputPath))
+			fs.delete(tempOutputPath, true);
+		OrcOutputFormat.setOutputPath(job, tempOutputPath);
 
 		JobClient.runJob(job);
 
-//		Path mergedOutputPath = new Path(output, prefix + "_part-00000.orc");
-		Path movedOutputPath = new Path(output);
-
-		System.out.println("[copy merge]: " + outputPath.toString() + " -> "
-				+ movedOutputPath.toString());
-
-//		FileUtil.copyMerge(fs, outputPath, fs, mergedOutputPath, true, conf,
-//				null);
+		/* Copy data to output */
+		long st = System.currentTimeMillis();
+		Path outputPath = new Path(output);
+		System.out.println("[copy]: " + tempOutputPath.toString() + " -> "
+				+ outputPath.toString());
 
 		List<Path> list = new ArrayList<Path>();
-		FileStatus[] contents = fs.listStatus(outputPath);
+		FileStatus[] contents = fs.listStatus(tempOutputPath);
 		for (int i = 0; i < contents.length; i++) {
 			if (!contents[i].isDir()) {
 				list.add(contents[i].getPath());
 			}
 		}
-		Path[] newPath = (Path[])list.toArray();
-		FileUtil.copy(fs, newPath, fs, movedOutputPath, true, true, conf);
+		Path[] srcPaths = new Path[list.size()];
+		srcPaths = list.toArray(srcPaths);
+		FileUtil.copy(fs, srcPaths, fs, outputPath, true, true, conf);
+
+		if (fs.exists(tempOutputPath))
+			fs.delete(tempOutputPath, true);
+		long en = System.currentTimeMillis();
+		System.out.println("Time cost: " + (en - st) / 1000 + "s.");
 	}
 
 	private static String genOutputFileNamePrefix(String kind, String date,

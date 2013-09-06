@@ -162,8 +162,10 @@ public class Test {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Test t = new Test();
-		t.testMROutput();
+		String output = "/data/dw/vv/20130728_orc/";
+		if (output.endsWith("/"))
+			output = output.substring(0, output.length() - 1);
+		System.out.println(output);
 	}
 
 }

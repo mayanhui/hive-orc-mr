@@ -30,7 +30,6 @@ public class ORCMapper extends MapReduceBase implements
 	@Override
 	public void configure(JobConf job) {
 		serde = new OrcSerde();
-		
 		String logKind = job.get("hive.orc.input.log.kind");
 		clazz = ModelClassFactory.createClass(logKind);
 		convertor = ConvertorFactory.createConvertor(logKind);
