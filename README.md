@@ -1,9 +1,9 @@
 Applications based on hadoop & hbase
 
 # Env
-Hive-0.11.0
-Hadoop-1.1.2
-JDK-1.6.0_35 +
+ * Hive-0.11.0
+ * Hadoop-1.1.2
+ * JDK-1.6.0_35 +
 
 
 # ORC File Format
