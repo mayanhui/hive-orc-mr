@@ -3,7 +3,7 @@ package com.adintellig.hive.orc.util;
 import java.util.HashMap;
 
 public class ConfigFactory {
-	public static final String APP_CONFIG_PATH = "/app.properties";
+	public static final String APP_CONFIG_PATH = "/orc.properties";
 
 	private static ConfigFactory instance = new ConfigFactory();
 	private HashMap<String, ConfigProperties> configMap = new HashMap<String, ConfigProperties>();
