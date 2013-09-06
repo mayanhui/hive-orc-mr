@@ -1,4 +1,4 @@
-package com.adintellig.util;
+package com.adintellig.hive.orc.util;
 
 import java.io.IOException;
 import java.io.InputStream;

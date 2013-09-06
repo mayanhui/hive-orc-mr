@@ -1,4 +1,4 @@
-package com.adintellig.util;
+package com.adintellig.hive.orc.util;
 
 public class Const {
 	public static final String HBASE_TABLE_NAME = "hbase.tablename";

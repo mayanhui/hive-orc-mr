@@ -1,4 +1,4 @@
-package com.adintellig.hive.orc;
+package com.adintellig.hive.orc.mapred;
 
 import java.io.IOException;
 
