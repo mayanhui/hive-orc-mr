@@ -1,6 +1,12 @@
 Applications based on hadoop & hbase
 
-#ORC File Format
+# Env
+ * Hive-0.11.0
+ * Hadoop-1.1.2
+ * JDK-1.6.0_35 +
+
+
+# ORC File Format
 The Optimized Row Columnar (ORC) file format provides a highly efficient way to store Hive data. It was designed to overcome limitations of the other Hive file formats. Using ORC files improves performance when Hive is reading, writing, and processing data.
 
 Compared with RCFile format, for example, ORC file format has many advantages such as:
