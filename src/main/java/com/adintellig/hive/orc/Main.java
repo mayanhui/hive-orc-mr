@@ -18,6 +18,7 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Writable;
+import org.apache.hadoop.mapred.FileInputFormat;
 import org.apache.hadoop.mapred.JobClient;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.util.GenericOptionsParser;
@@ -62,6 +63,9 @@ public class Main {
 			conf.set("hive.orc.input.log.kind", kind.trim().toLowerCase());
 		if (null != queue && queue.trim().length() > 0)
 			conf.set("mapred.job.queue.name", queue.trim());
+		
+		conf.setLong("mapred.max.split.size", 1024 * 1024 * 512);
+		conf.setLong("mapred.min.split.size", 1024 * 1024 * 256);
 
 		/* JOB */
 		JobConf job = new JobConf(conf);
@@ -73,7 +77,8 @@ public class Main {
 		job.setOutputValueClass(Writable.class);
 		job.setInputFormat(DeprecatedLzoTextInputFormat.class);
 		job.setOutputFormat(OrcOutputFormat.class);
-
+		
+		
 		DeprecatedLzoTextInputFormat.addInputPath(job, new Path(input));
 
 		FileSystem fs = FileSystem.get(conf);
